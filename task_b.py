@@ -329,7 +329,7 @@ def format_output(metadata, embeddings, model, query, enable_diversity):
             
             <div style="margin-top:20px;">
                 <h4 style="margin:0 0 10px 0; color:{_ACCENT};">1. Normalised Query & Persona</h4>
-                <pre style="background:#f8f9fa; padding:10px; border-radius:6px; font-size:12px; overflow:auto;">{persona_json}</pre>
+                <pre style="background:#13131f; color:#cdd6f4; padding:15px; border-radius:8px; font-size:13px; font-family:'Fira Code', monospace; overflow:auto; border:1px solid #2e2e3e;">{persona_json}</pre>
             </div>
 
             <div style="margin-top:20px;">

@@ -557,7 +557,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 if os.path.exists(PRE_COMPUTED_EMBEDDINGS) and os.path.exists(PRE_COMPUTED_METADATA):
     print("Loading pre‑computed embeddings and metadata...")
     embeddings = np.load(PRE_COMPUTED_EMBEDDINGS)
-    metadata   = pd.read_csv(PRE_COMPUTED_METADATA)
+    metadata   = pd.read_csv(PRE_COMPUTED_METADATA, low_memory=False)
     print(f"Loaded {len(metadata)} items from pre‑computed files.")
 else:
     print("Pre‑computed files not found. Looking for catalogue CSV...")

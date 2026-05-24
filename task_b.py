@@ -319,8 +319,9 @@ def format_output(metadata, embeddings, model, query, enable_diversity):
     
     tooltip_html = f"""
     <div style="background:#0b0b0b; border:1px solid {_BORDER}; padding:10px; border-radius:6px; font-size:12px; color:{_TEXT_MID}; margin-bottom:10px; font-weight:500;">
-        How Top 10 are selected: We retrieve 50 candidates using Cosine Similarity, score them based on budget and ratings, 
-        use an LLM to re-rank the top 20, and finally apply MMR (Maximal Marginal Relevance) to pick the 10 most diverse and relevant matches.
+        How Top 10 are selected: We embed the query, retrieve the top 50 by cosine similarity (filtering by domain if possible),
+        re-score with rating bonus, budget penalty, and category boost, then ask the LLM to re-rank the top 20, and finally apply
+        MMR (Maximal Marginal Relevance) to return the 10 most diverse and relevant matches.
     </div>
     """
     

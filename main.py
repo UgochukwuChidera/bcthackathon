@@ -149,8 +149,7 @@ Return JSON: {{"rating": (integer 1-5), "review": "text"}}
     except Exception:
         rating = 3
 
-    stars = "★" * rating + "☆" * (5 - rating)
-    rating_display = f"{stars}  {rating} / 5"
+    rating_display = f"{rating} / 5"
 
     return profile, f'"{review}"', rating_display
 
@@ -452,8 +451,8 @@ with gr.Blocks(title="User Modeling Agent", css=css) as demo:
 
     gr.HTML("""
     <div class="uma-header">
-        <h1>User <em>Modeling</em> Agent</h1>
-        <p>Two-pass normaliser &nbsp;·&nbsp; Persona-driven review generation</p>
+        <h1>User Modeling Agent</h1>
+        <p>Two-pass normaliser &middot; Persona-driven review generation</p>
     </div>
     """)
 
@@ -491,7 +490,7 @@ with gr.Blocks(title="User Modeling Agent", css=css) as demo:
             )
 
             with gr.Row():
-                lib_fill_btn = gr.Button("Load into editor ↑", elem_classes="btn-ghost", scale=3)
+                lib_fill_btn = gr.Button("Load into editor", elem_classes="btn-ghost", scale=3)
                 lib_delete_btn = gr.Button("Delete", elem_classes="btn-danger", scale=1)
 
             lib_status = gr.Textbox(
@@ -513,12 +512,12 @@ with gr.Blocks(title="User Modeling Agent", css=css) as demo:
                 placeholder="Describe this persona…",
                 lines=2,
             )
-            add_btn = gr.Button("Add to library →", elem_classes="btn-ghost")
+            add_btn = gr.Button("Add to library", elem_classes="btn-ghost")
 
             gr.HTML('<div style="margin-top:0.75rem"></div>')
 
             submit_btn = gr.Button(
-                "Generate review →",
+                "Generate review",
                 variant="primary",
                 elem_classes="btn-primary",
             )
@@ -557,7 +556,7 @@ with gr.Blocks(title="User Modeling Agent", css=css) as demo:
 
     gr.HTML("""
     <div class="uma-footer">
-        Powered by OpenRouter (GPT-4o-mini) &nbsp;·&nbsp; Nigerian slang dictionary &nbsp;·&nbsp; Two-pass normalisation
+        Powered by OpenRouter (GPT-4o-mini) &middot; Nigerian slang dictionary &middot; Two-pass normalisation
     </div>
     """)
 

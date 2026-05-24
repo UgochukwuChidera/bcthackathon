@@ -256,13 +256,13 @@ def recommend_flow(metadata, embeddings, model, query_text, enable_diversity=Tru
 # ------------------------------------------------------------
 # 4. UI Rendering & Table logic
 # ------------------------------------------------------------
-_ACCENT      = "#4a6fa5"
-_ACCENT_LITE = "#dce6f5"
-_ROW_ALT     = "#f7f5f2"
+_ACCENT      = "#1e3a8a"
+_ACCENT_LITE = "#dbeafe"
+_ROW_ALT     = "#f1f5f9"
 _ROW_BASE    = "#ffffff"
-_TEXT_MAIN   = "#1a1a1a"
-_TEXT_MID    = "#444444"
-_BORDER      = "#e0dbd4"
+_TEXT_MAIN   = "#0f172a"
+_TEXT_MID    = "#334155"
+_BORDER      = "#94a3b8"
 
 def build_results_table(items, is_top_20=False):
     if not items: return ""
@@ -271,7 +271,7 @@ def build_results_table(items, is_top_20=False):
     
     # Column Headers
     cols = ["#", "Name", "Category", "Rating", "Price", "Original Sim", "Computation (Final Score)"]
-    header = "".join([f"<th style='padding:12px; border-bottom:2px solid {_BORDER}; text-align:left; font-size:11px; text-transform:uppercase;'>{c}</th>" for c in cols])
+    header = "".join([f"<th style='padding:12px; border-bottom:2px solid #1e293b; text-align:left; font-size:12px; text-transform:uppercase; color:#0f172a;'>{c}</th>" for c in cols])
     
     rows_html = ""
     for i, (idx, score, r) in enumerate(items):
@@ -279,20 +279,20 @@ def build_results_table(items, is_top_20=False):
         
         # Computation string
         comp = f"Sim: {r['_cos_sim']:.3f}"
-        if r['_star_bonus'] != 1.0: comp += f" × <span style='color:green;'>Star: {r['_star_bonus']:.2f}</span>"
-        if r['_price_penalty'] < 1.0: comp += f" × <span style='color:red;'><b>Penalty: {r['_price_penalty']:.2f}</b></span>"
-        if r['_cat_bonus'] > 1.0: comp += f" × <span style='color:blue;'>Cat: {r['_cat_bonus']:.1f}</span>"
-        comp += f" = <b>{score:.3f}</b>"
+        if r['_star_bonus'] != 1.0: comp += f" x <span style='color:#166534; font-weight:bold;'>Star: {r['_star_bonus']:.2f}</span>"
+        if r['_price_penalty'] < 1.0: comp += f" x <span style='color:#991b1b; font-weight:bold;'>Penalty: {r['_price_penalty']:.2f}</span>"
+        if r['_cat_bonus'] > 1.0: comp += f" x <span style='color:#1e40af; font-weight:bold;'>Cat: {r['_cat_bonus']:.1f}</span>"
+        comp += f" = <span style='font-weight:bold;'>{score:.3f}</span>"
         
         rows_html += f"""
         <tr style="background:{bg}; font-size:13px; color:{_TEXT_MAIN};">
-            <td style="padding:10px; border-bottom:1px solid {_BORDER};">{i+1}</td>
-            <td style="padding:10px; border-bottom:1px solid {_BORDER}; font-weight:500;">{r['name']}</td>
-            <td style="padding:10px; border-bottom:1px solid {_BORDER}; color:{_TEXT_MID};">{r['category']}</td>
-            <td style="padding:10px; border-bottom:1px solid {_BORDER};">★ {r['rating_num']:.1f}</td>
-            <td style="padding:10px; border-bottom:1px solid {_BORDER};">${r['price_numeric']:.2f}</td>
-            <td style="padding:10px; border-bottom:1px solid {_BORDER};">{r['_cos_sim']:.4f}</td>
-            <td style="padding:10px; border-bottom:1px solid {_BORDER};">{comp}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER}; font-weight:bold;">{i+1}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER}; font-weight:bold;">{r['name']}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER}; color:{_TEXT_MID}; font-weight:500;">{r['category']}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER}; font-weight:bold;">{r['rating_num']:.1f}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER}; font-weight:bold;">${r['price_numeric']:.2f}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER};">{r['_cos_sim']:.4f}</td>
+            <td style="padding:12px; border-bottom:1px solid {_BORDER};">{comp}</td>
         </tr>
         """
         
@@ -316,8 +316,8 @@ def format_output(metadata, embeddings, model, query, enable_diversity):
     top20_table = build_results_table(top20_items, is_top_20=True)
     
     tooltip_html = """
-    <div style="background:#fff9e6; border:1px solid #ffe58f; padding:10px; border-radius:6px; font-size:12px; color:#856404; margin-bottom:10px;">
-        💡 <b>How Top 10 are selected:</b> We retrieve 50 candidates using Cosine Similarity, score them based on budget and ratings, 
+    <div style="background:#fffbeb; border:1px solid #f59e0b; padding:10px; border-radius:6px; font-size:12px; color:#92400e; margin-bottom:10px; font-weight:500;">
+        How Top 10 are selected: We retrieve 50 candidates using Cosine Similarity, score them based on budget and ratings, 
         use an LLM to re-rank the top 20, and finally apply MMR (Maximal Marginal Relevance) to pick the 10 most diverse and relevant matches.
     </div>
     """
@@ -325,22 +325,22 @@ def format_output(metadata, embeddings, model, query, enable_diversity):
     html = f"""
     <div style="font-family:sans-serif; padding:10px;">
         <details open style="border:1px solid {_BORDER}; border-radius:8px; padding:15px; background:#fff;">
-            <summary style="font-weight:bold; cursor:pointer; font-size:16px;">🔍 Full Recommendation Analysis (Click to collapse)</summary>
+            <summary style="font-weight:bold; cursor:pointer; font-size:16px; color:#0f172a;">Full Recommendation Analysis (Click to collapse)</summary>
             
             <div style="margin-top:20px;">
-                <h4 style="margin:0 0 10px 0; color:{_ACCENT};">1. Normalised Query & Persona</h4>
+                <h4 style="margin:0 0 10px 0; color:#1e3a8a;">1. Normalised Query & Persona</h4>
                 <pre style="background:#13131f; color:#cdd6f4; padding:15px; border-radius:8px; font-size:13px; font-family:'Fira Code', monospace; overflow:auto; border:1px solid #2e2e3e;">{persona_json}</pre>
             </div>
 
             <div style="margin-top:20px;">
-                <h4 style="margin:0 0 10px 0; color:{_ACCENT};">2. Top 10 Selected Recommendations</h4>
+                <h4 style="margin:0 0 10px 0; color:#1e3a8a;">2. Top 10 Selected Recommendations</h4>
                 {tooltip_html}
                 <div style="overflow-x:auto;">{final_table}</div>
             </div>
 
             <div style="margin-top:30px;">
                 <details style="border-top:1px solid {_BORDER}; padding-top:15px;">
-                    <summary style="cursor:pointer; color:{_TEXT_MID}; font-weight:500;">📋 View Top 20 Candidates (Pre-Diversity Filtering)</summary>
+                    <summary style="cursor:pointer; color:#334155; font-weight:bold;">View Top 20 Candidates (Pre-Diversity Filtering)</summary>
                     <div style="overflow-x:auto; margin-top:10px;">{top20_table}</div>
                 </details>
             </div>

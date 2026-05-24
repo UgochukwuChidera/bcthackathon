@@ -317,32 +317,32 @@ def format_output(metadata, embeddings, model, query, enable_diversity):
     final_table = build_results_table(final_items)
     top20_table = build_results_table(top20_items, is_top_20=True)
     
-    tooltip_html = """
-    <div style="background:#fffbeb; border:1px solid #f59e0b; padding:10px; border-radius:6px; font-size:12px; color:#92400e; margin-bottom:10px; font-weight:500;">
+    tooltip_html = f"""
+    <div style="background:#0b0b0b; border:1px solid {_BORDER}; padding:10px; border-radius:6px; font-size:12px; color:{_TEXT_MID}; margin-bottom:10px; font-weight:500;">
         How Top 10 are selected: We retrieve 50 candidates using Cosine Similarity, score them based on budget and ratings, 
         use an LLM to re-rank the top 20, and finally apply MMR (Maximal Marginal Relevance) to pick the 10 most diverse and relevant matches.
     </div>
     """
     
     html = f"""
-    <div style="font-family:sans-serif; padding:10px;">
-        <details open style="border:1px solid {_BORDER}; border-radius:8px; padding:15px; background:#fff;">
-            <summary style="font-weight:bold; cursor:pointer; font-size:16px; color:#0f172a;">Full Recommendation Analysis (Click to collapse)</summary>
+    <div style="font-family:sans-serif; padding:10px; background:#0d0d0d; color:{_TEXT_MAIN};">
+        <details open style="border:1px solid {_BORDER}; border-radius:8px; padding:15px; background:#0b0b0b;">
+            <summary style="font-weight:bold; cursor:pointer; font-size:16px; color:{_TEXT_MAIN};">Full Recommendation Analysis (Click to collapse)</summary>
             
             <div style="margin-top:20px;">
-                <h4 style="margin:0 0 10px 0; color:#1e3a8a;">1. Normalised Query & Persona</h4>
-                <pre style="background:#13131f; color:#cdd6f4; padding:15px; border-radius:8px; font-size:13px; font-family:'Fira Code', monospace; overflow:auto; border:1px solid #2e2e3e;">{persona_json}</pre>
+                <h4 style="margin:0 0 10px 0; color:{_TEXT_MAIN};">1. Normalised Query & Persona</h4>
+                <pre style="background:#0f1115; color:{_TEXT_MAIN}; padding:15px; border-radius:8px; font-size:13px; font-family:'Fira Code', monospace; overflow:auto; border:1px solid {_BORDER};">{persona_json}</pre>
             </div>
 
             <div style="margin-top:20px;">
-                <h4 style="margin:0 0 10px 0; color:#1e3a8a;">2. Top 10 Selected Recommendations</h4>
+                <h4 style="margin:0 0 10px 0; color:{_TEXT_MAIN};">2. Top 10 Selected Recommendations</h4>
                 {tooltip_html}
                 <div style="overflow-x:auto;">{final_table}</div>
             </div>
 
             <div style="margin-top:30px;">
                 <details style="border-top:1px solid {_BORDER}; padding-top:15px;">
-                    <summary style="cursor:pointer; color:#334155; font-weight:bold;">View Top 20 Candidates (Pre-Diversity Filtering)</summary>
+                    <summary style="cursor:pointer; color:{_TEXT_MID}; font-weight:bold;">View Top 20 Candidates (Pre-Diversity Filtering)</summary>
                     <div style="overflow-x:auto; margin-top:10px;">{top20_table}</div>
                 </details>
             </div>

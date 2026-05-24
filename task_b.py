@@ -602,4 +602,4 @@ with gr.Blocks(css=CSS, title="Recommendation Agent") as demo:
     btn.click(fn=lambda q, d: format_output(metadata, embeddings, model, q, d), inputs=[inp, diversity_cb], outputs=out)
 
 if __name__ == "__main__":
-    demo.launch(share=True, strict_cors=False)
+    demo.launch()

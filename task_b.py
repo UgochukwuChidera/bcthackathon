@@ -1,7 +1,6 @@
 import gradio as gr
 import numpy as np
 import pandas as pd
-import re
 import json
 import os
 from sentence_transformers import SentenceTransformer
@@ -205,7 +204,8 @@ Return ONLY a JSON array of the original indices (1-based).
         try:
             ordered = [candidates[int(i)-1] for i in result if 1 <= int(i) <= len(candidates)]
             return ordered
-        except: pass
+        except (ValueError, IndexError):
+            pass
     return candidates[:top_k]
 
 def mmr_diversity(candidates, lambda_param=0.6, top_k=10):
@@ -256,22 +256,21 @@ def recommend_flow(metadata, embeddings, model, query_text, enable_diversity=Tru
 # ------------------------------------------------------------
 # 4. UI Rendering & Table logic
 # ------------------------------------------------------------
-_ACCENT      = "#1e3a8a"
-_ACCENT_LITE = "#dbeafe"
-_ROW_ALT     = "#f1f5f9"
-_ROW_BASE    = "#ffffff"
-_TEXT_MAIN   = "#0f172a"
-_TEXT_MID    = "#334155"
-_BORDER      = "#94a3b8"
+_ACCENT      = "#ffffff"
+_ACCENT_LITE = "#0f0f0f"
+_ROW_ALT     = "#111111"
+_ROW_BASE    = "#151515"
+_TEXT_MAIN   = "#ffffff"
+_TEXT_MID    = "#e5e7eb"
+_BORDER      = "#2a2a2a"
 
 def build_results_table(items, is_top_20=False):
-    if not items: return ""
-    
-    max_score = max(it[1] for it in items) if items else 1.0
+    if not items:
+        return ""
     
     # Column Headers
     cols = ["#", "Name", "Category", "Rating", "Price", "Original Sim", "Computation (Final Score)"]
-    header = "".join([f"<th style='padding:12px; border-bottom:2px solid #1e293b; text-align:left; font-size:12px; text-transform:uppercase; color:#0f172a;'>{c}</th>" for c in cols])
+    header = "".join([f"<th style='padding:12px; border-bottom:2px solid {_BORDER}; text-align:left; font-size:12px; text-transform:uppercase; color:{_TEXT_MAIN}; background:#0b0b0b;'>{c}</th>" for c in cols])
     
     rows_html = ""
     for i, (idx, score, r) in enumerate(items):
@@ -279,9 +278,12 @@ def build_results_table(items, is_top_20=False):
         
         # Computation string
         comp = f"Sim: {r['_cos_sim']:.3f}"
-        if r['_star_bonus'] != 1.0: comp += f" x <span style='color:#166534; font-weight:bold;'>Star: {r['_star_bonus']:.2f}</span>"
-        if r['_price_penalty'] < 1.0: comp += f" x <span style='color:#991b1b; font-weight:bold;'>Penalty: {r['_price_penalty']:.2f}</span>"
-        if r['_cat_bonus'] > 1.0: comp += f" x <span style='color:#1e40af; font-weight:bold;'>Cat: {r['_cat_bonus']:.1f}</span>"
+        if r['_star_bonus'] != 1.0:
+            comp += f" x <span style='color:#166534; font-weight:bold;'>Star: {r['_star_bonus']:.2f}</span>"
+        if r['_price_penalty'] < 1.0:
+            comp += f" x <span style='color:#991b1b; font-weight:bold;'>Penalty: {r['_price_penalty']:.2f}</span>"
+        if r['_cat_bonus'] > 1.0:
+            comp += f" x <span style='color:#1e40af; font-weight:bold;'>Cat: {r['_cat_bonus']:.1f}</span>"
         comp += f" = <span style='font-weight:bold;'>{score:.3f}</span>"
         
         rows_html += f"""
@@ -297,7 +299,7 @@ def build_results_table(items, is_top_20=False):
         """
         
     return f"""
-    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+    <table style="width:100%; border-collapse:collapse; margin-top:10px; background:#0d0d0d; color:{_TEXT_MAIN};">
         <thead><tr>{header}</tr></thead>
         <tbody>{rows_html}</tbody>
     </table>
